@@ -3,14 +3,12 @@ import Node from './Node';
 import { dijkstra,getNodesInShortestPathOrder } from '../Algorithms/dijkstra';
 import { selectData } from "../Redux/slice";
 import { useSelector, useDispatch } from "react-redux";
-import {setStart,setEnd} from '../Redux/slice'
 
 const PathFinder = () => {
-  const dispatch = useDispatch();
-  const {data} = useSelector(selectData)
+    const dispatch = useDispatch();
+    const {data} = useSelector(selectData)
     const [grid,setGrid] = useState([]);
-    const [startReady,setStartReady] = useState(false);
-    const [endReady,setEndReady] = useState(false);
+
 
     useEffect(() => {
         const matrix = formGrid();
@@ -18,10 +16,10 @@ const PathFinder = () => {
         console.log(matrix);
     }, [])
 
-    const START_NODE_ROW = 10;
-    const START_NODE_COL = 15;
-    const FINISH_NODE_ROW = 10;
-    const FINISH_NODE_COL = 35;
+    const START_NODE_ROW = data?.startIndex?.row || 10;
+    const START_NODE_COL = data?.startIndex?.col || 15;
+    const FINISH_NODE_ROW = data?.endIndex?.row || 15;
+    const FINISH_NODE_COL = data?.endIndex?.col || 35;
     
 
     const createNode = (row,col)=>{
@@ -99,7 +97,7 @@ const PathFinder = () => {
                             row.map((node)=>{
                                 const {row,col,isWall,isStart,isFinish} = node;
                                 return(
-                                    <Node  props={{row,col,isStart,isWall,isFinish,startReady,endReady,setStartReady,setEndReady}} />
+                                    <Node  props={{row,col,isStart,isWall,isFinish}} />
                                 )
                             })
                         }
@@ -108,14 +106,6 @@ const PathFinder = () => {
             })
         }
     </div>
-    <button onClick={()=>setStartReady(true)}>Set Start Node</button>
-    <button onClick={()=>{
-            setEndReady(true)
-    }}>Set End Node</button>
-    <button onClick={()=>{
-        setStartReady(false)
-        setEndReady(false)
-    }}>Stop Set</button>
     <button onClick={() =>visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
         </button>

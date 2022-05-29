@@ -16,20 +16,27 @@ export const dataSlice = createSlice({
     },
     reducers:{
         setStart:(state,action)=>{
-            state.startIndex = action.payload
-            console.log("START",action.payload)
-            state.isSetStart=true;
+            state = {...state,startIndex:action.payload}
+            state = {...state,isSetStart:true}
+            console.log("DHSF",state)
+            return state;
         },
         setEnd:(state,action)=>{
-            state.endIndex = action.payload
-            console.log("END",action.payload)
-            state.isSetEnd=true;
+            console.log("BEFORE",state)
+            state = {...state,endIndex:action.payload}
+            state = {...state,isSetEnd:true}
+            console.log("After",state)
+            return state;
         },
-        
+        clear:(state)=>{
+            state = {...state,isSetStart:false}
+            state = {...state,isSetEnd:false}
+            return state;
+        }
     }
 })
 
-export const {setStart, setEnd} = dataSlice.actions;
+export const {setStart, setEnd,clear} = dataSlice.actions;
 
 export const selectData = (state)=>state;
 
