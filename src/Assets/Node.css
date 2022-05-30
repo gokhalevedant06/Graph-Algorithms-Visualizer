@@ -36,6 +36,10 @@
     }
   } */
 
+  .node-wall {
+    background-color: rgb(12, 53, 71);
+  }
+
 
   .node-visited {
     background-color: rgba(125, 255, 179, 0.75);

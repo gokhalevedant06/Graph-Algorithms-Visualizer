@@ -12,31 +12,34 @@ export const dataSlice = createSlice({
             col:null
         },
         isSetStart:false,
-        isSetEnd:false
+        isSetEnd:false,
+        isWallStart:false,
+        wallArr:[
+        ]
     },
     reducers:{
         setStart:(state,action)=>{
             state = {...state,startIndex:action.payload}
             state = {...state,isSetStart:true}
-            console.log("DHSF",state)
             return state;
         },
         setEnd:(state,action)=>{
-            console.log("BEFORE",state)
             state = {...state,endIndex:action.payload}
             state = {...state,isSetEnd:true}
-            console.log("After",state)
             return state;
         },
-        clear:(state)=>{
-            state = {...state,isSetStart:false}
-            state = {...state,isSetEnd:false}
+        setWalls:(state,action)=>{
+            state = {...state,isWallStart:true}
             return state;
+        },
+        setWallArray:(state,action)=>{
+            var newArr = state.wallArr.push(action.payload)
+            state = {...state,wallArr:newArr}
         }
     }
 })
 
-export const {setStart, setEnd,clear} = dataSlice.actions;
+export const {setStart, setEnd,setWalls,setWallArray} = dataSlice.actions;
 
 export const selectData = (state)=>state;
 
