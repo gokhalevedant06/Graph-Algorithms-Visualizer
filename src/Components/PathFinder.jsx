@@ -3,7 +3,7 @@ import Node from "./Node";
 import { dijkstra, getNodesInShortestPathOrder } from "../Algorithms/dijkstra";
 import { selectData, setWalls } from "../Redux/slice";
 import { useSelector, useDispatch } from "react-redux";
-
+import Astar from "../Algorithms/astar";
 const PathFinder = () => {
   const dispatch = useDispatch();
   const { data } = useSelector(selectData);
@@ -30,6 +30,9 @@ const PathFinder = () => {
       isVisited: false,
       isWall: false,
       previousNode: null,
+      g:0,
+      f:0,
+      h:0
     };
   };
 
@@ -91,6 +94,18 @@ const PathFinder = () => {
     return grid;
   }
 
+  // const setRandomWalls = (grid)=>{
+  //   for (let row = 0; row < 10; row++) {
+  //     for (let col = 0; col < 20; col++) {
+  //         let randomRow = Math.floor(Math.random() * 19);
+  //         let randomCol = Math.floor(Math.random() * 48);
+  //         grid[randomRow][randomCol].isWall = true;
+  //     }
+  //   }
+  //   return grid;
+  // }
+
+
   const visualizeDijkstra = () => {
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -100,15 +115,28 @@ const PathFinder = () => {
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
+  const visualizeAStar = ()=>{
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const newGrid = markWalls(grid);
+    const result = Astar(startNode, finishNode,newGrid);
+    animateDijkstra(result.visitedNodes, result.path);
+  }
+
 
   return (
     <>
-      <div>
+    <div className="fcontainer">
+    <div>
         {grid.map((row) => {
           return (
             <div>
               {row.map((node) => {
-                const { row, col, isWall, isStart, isFinish } = node;
+                var { row, col, isWall, isStart, isFinish } = node;
+                // const wall = Math.round(Math.random())
+                // if(wall==1){
+                //   isWall=true;
+                // }
                 return (
                   <Node
                     props={{ row, col, isStart, isWall, isFinish }}
@@ -119,18 +147,22 @@ const PathFinder = () => {
           );
         })}
       </div>
-      <button onClick={() => visualizeDijkstra()}>
-        Visualize Dijkstra's Algorithm
-      </button>
-      <button onClick={()=>dispatch(setWalls())}>
+
+    </div>
+      
+      <div className="container">
+
+      <button className="button" onClick={()=>dispatch(setWalls())}>
         Set Walls
       </button>
-      <button>
-        Visualize BFS
+      <button className="button" onClick={() => visualizeDijkstra()}>
+        Visualize Dijkstra's Algorithm
       </button>
-      <button>
-        Visualize DFS
+      <button className="button" onClick={()=>visualizeAStar()}>
+      Visualize AStar
       </button>
+      </div>
+  
     </>
   );
 };
