@@ -9,10 +9,10 @@ const PathFinder = () => {
   const { data } = useSelector(selectData);
   const [grid, setGrid] = useState([]);
   
-
   useEffect(() => {
     const matrix = formGrid();
     setGrid(matrix);
+    // eslint-disable-next-line
   }, []);
 
   const START_NODE_ROW = data?.startIndex?.row || 10;
